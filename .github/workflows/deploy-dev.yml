@@ -1,12 +1,12 @@
-name: Deploy master branch
+name: Deploy dev branch
 
 on:
   push:
     branches:
-      - master
+      - dev
 
 jobs:
   call-reusable-workflow:
     uses: ./.github/workflow/reusable-workflow.yml
     with:
-      stage: prod
+      stage: dev
