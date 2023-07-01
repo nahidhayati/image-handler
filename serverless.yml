@@ -1,0 +1,20 @@
+
+service: image-handler
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: java17
+  stage: ${opt:stage, 'dev'}
+
+package:
+  artifact: target/scala-2.13/image-handler.jar
+
+functions:
+  hello:
+    handler: hello.ApiGatewayHandler
+    events:
+      - http:
+          path: hello
+          method: get
