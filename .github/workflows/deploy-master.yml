@@ -7,6 +7,6 @@ on:
 
 jobs:
   call-reusable-workflow:
-    uses: ./.github/workflow/reusable-workflow.yml
+    uses: ./.github/workflows/reusable-workflow.yml
     with:
       stage: prod
