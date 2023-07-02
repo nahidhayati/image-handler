@@ -1,3 +1,9 @@
+name: Reusable workflow
+
+on:
+  workflow_call:
+
+jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
