@@ -2,6 +2,9 @@ name: Reusable workflow
 
 on:
   workflow_call:
+    inputs:
+      stage:
+        required: true
 
 jobs:
   deploy:
