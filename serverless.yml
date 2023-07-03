@@ -22,11 +22,11 @@ custom:
   bucketName: cats-gallery
 
 functions:
-  hello:
-    handler: hello.ApiGatewayHandler
+  pingPong:
+    handler: hello.PingPongHandler
     events:
       - http:
-          path: hello
+          path: ping
           method: get
   getDailyImage:
     handler: lambdas.endpoints.GetDailyImageHandler
