@@ -1,14 +1,15 @@
 package lambdas.utils
 
-import com.amazonaws.services.lambda.runtime.LambdaLogger
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
+import java.util.logging.Logger
 import scala.language.implicitConversions
-
 import scala.util.{Failure, Success, Try}
 
 trait TryBase64ToResponseComponent {
 
-  implicit def TryBase64ToResponse(result: Try[String])(implicit logger: LambdaLogger): APIGatewayProxyResponseEvent = {
+  private val logger: Logger =  Logger.getLogger(this.getClass().getName())
+
+  implicit def TryBase64ToResponse(result: Try[String]): APIGatewayProxyResponseEvent = {
     result match {
       case Success(base64Image) =>
         val response = new APIGatewayProxyResponseEvent()
@@ -17,7 +18,7 @@ trait TryBase64ToResponseComponent {
         response.setIsBase64Encoded(true)
         response
       case Failure(exception) =>
-        logger.log("Exception: " + exception.getMessage)
+        logger.severe("Exception: " + exception.getMessage)
         val response = new APIGatewayProxyResponseEvent()
         response.setStatusCode(500)
         response.setBody("Error occurred while processing the image")
