@@ -23,7 +23,7 @@ custom:
 
 functions:
   pingPong:
-    handler: hello.PingPongHandler
+    handler: lambdas.endpoints.PingPongHandler
     events:
       - http:
           path: ping
