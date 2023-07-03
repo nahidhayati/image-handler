@@ -30,8 +30,15 @@ functions:
           method: get
   getDailyImage:
     handler: lambdas.endpoints.GetDailyImageHandler
-    timeout: 600
+    timeout: 30
     events:
       - http:
           path: cats/daily
+          method: get
+  getRandomImage:
+    handler: lambdas.endpoints.GetRandomImageHandler
+    timeout: 30
+    events:
+      - http:
+          path: cats/random
           method: get

@@ -1,21 +1,23 @@
 package lambdas.endpoints
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
+import com.amazonaws.services.lambda.runtime.events.{APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent}
 import com.amazonaws.services.lambda.runtime.{Context, LambdaLogger, RequestHandler}
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.util.IOUtils
-import java.util.Base64
 import lambdas.utils.DateUtils
 
-class GetDailyImageHandler extends RequestHandler[Unit, APIGatewayProxyResponseEvent] {
+import java.util.Base64
 
-  override def handleRequest(input: Unit, context: Context): APIGatewayProxyResponseEvent = {
+class GetRandomImageHandler extends RequestHandler[APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent] {
+
+  override def handleRequest(input: APIGatewayProxyRequestEvent, context: Context): APIGatewayProxyResponseEvent = {
     val logger: LambdaLogger = context.getLogger()
 
     val bucketName: String = sys.env.get("bucketName").getOrElse("")
     val objectsCount = DateUtils.getDaysFrom("2023-07-01")
-    val key = s"$objectsCount.jpeg"
-    logger.log(s"Objects count: $objectsCount")
+    val rnd = util.Random.between(1, objectsCount)
+    val key = s"$rnd.jpeg"
+    logger.log(s"Objects count: $objectsCount --- Random number: $rnd")
 
     val s3Client = AmazonS3ClientBuilder.defaultClient()
 
@@ -38,5 +40,4 @@ class GetDailyImageHandler extends RequestHandler[Unit, APIGatewayProxyResponseE
         response
     }
   }
-
 }
