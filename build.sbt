@@ -24,8 +24,8 @@ scalacOptions ++= Seq(
 )
 
 assemblyMergeStrategy in assembly := {
-  case PathList(ps @ _*) if ps.last == "Log4j2Plugins.dat" =>
-    Log4j2MergeStrategy.plugincache
+  case PathList(ps @ _*) if ps.last == "Log4j2Plugins.dat" => Log4j2MergeStrategy.plugincache
+  case PathList("module-info.class") => MergeStrategy.concat
   case x =>
     val oldStrategy = (assemblyMergeStrategy in assembly).value
     oldStrategy(x)
