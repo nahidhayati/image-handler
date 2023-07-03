@@ -9,6 +9,11 @@ provider:
   stage: ${opt:stage, 'dev'}
   environment:
     bucketName: ${self:custom.bucketName}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: '*'
 
 package:
   artifact: target/scala-2.13/image-handler.jar
@@ -30,10 +35,3 @@ functions:
       - http:
           path: cats/daily
           method: get
-
-resources:
-  Resources:
-    S3Bucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.bucketName}
