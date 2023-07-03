@@ -7,9 +7,14 @@ provider:
   name: aws
   runtime: java17
   stage: ${opt:stage, 'dev'}
+  environment:
+    bucketName: ${self:custom.bucketName}
 
 package:
   artifact: target/scala-2.13/image-handler.jar
+
+custom:
+  bucketName: cats-gallery
 
 functions:
   hello:
@@ -18,3 +23,17 @@ functions:
       - http:
           path: hello
           method: get
+  getDailyImage:
+    handler: lambdas.endpoints.GetDailyImageHandler
+    timeout: 600
+    events:
+      - http:
+          path: cats/daily
+          method: get
+
+resources:
+  Resources:
+    S3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketName}
