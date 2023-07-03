@@ -11,6 +11,8 @@ on:
         required: true
       AWS_SECRET_ACCESS_KEY:
         required: true
+      OPENAI_API_KEY:
+        required: true
 
 jobs:
   deploy:
@@ -20,6 +22,14 @@ jobs:
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
+
+      - name: Append to file
+        uses: DamianReeves/write-file-action@master
+        with:
+          path: ./src/main/resources/application.conf
+          contents: |
+            openAiApiKey = ${{ secrets.OPENAI_API_KEY }}
+          write-mode: append
 
       - name: Setup Scala
         uses: olafurpg/setup-scala@v12
