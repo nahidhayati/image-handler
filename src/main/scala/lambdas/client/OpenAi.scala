@@ -13,22 +13,18 @@ object OpenAi {
   def getImage(): Future[String] = {
 
     val apiKey: String = config.getString("openAiApiKey")
+    val service = OpenAIServiceFactory(apiKey = apiKey)
 
     logger.info(s"apiKey: " + apiKey)
 
-    val service = OpenAIServiceFactory(apiKey = apiKey)
-
-    val setting = CreateImageSettings(
+    val prompt = "A cat that is playing with a little girl, digital art."
+    val settings = CreateImageSettings(
       n = Some(1),
       size = Some(ImageSizeType.Large),
       response_format = Some(ImageResponseFormatType.b64_json)
     )
 
-    service.createImage("a cute cat", setting).map {
-      imgInfo =>
-        logger.info("------after create Image: " + imgInfo.data.headOption.flatMap(_.headOption).getOrElse("-100"))
-        imgInfo.data.head.values.head
-    }
+    service.createImage(prompt, settings).map(_.data.head.values.head)
   }
 
 }

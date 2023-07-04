@@ -1,12 +1,10 @@
 package lambdas.endpoints
 
-import com.amazonaws.services.lambda.runtime.events.{APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent}
-import com.amazonaws.services.lambda.runtime.{Context, LambdaLogger, RequestHandler}
-import com.amazonaws.services.s3.AmazonS3ClientBuilder
-import com.amazonaws.util.IOUtils
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
+import com.amazonaws.services.lambda.runtime.{Context, RequestHandler}
+import lambdas.config
 import lambdas.process.ImageProcess
 import lambdas.utils.{DateUtils, TryBase64ToResponseComponent}
-import java.util.Base64
 import java.util.logging.Logger
 
 class GetRandomImageHandler
@@ -17,9 +15,11 @@ class GetRandomImageHandler
 
   override def handleRequest(input: Unit, context: Context): APIGatewayProxyResponseEvent = {
 
-    val bucketName: String = sys.env.get("bucketName").getOrElse("")
-    val objectsCount = DateUtils.getDaysFrom("2023-07-01")
+    val startDate: String = config.getString("startDate")
+    val objectsCount = DateUtils.getDaysFrom(startDate)
     val rnd = util.Random.between(1, objectsCount)
+
+    val bucketName: String = sys.env.get("bucketName").getOrElse("")
     val key = s"$rnd.jpeg"
 
     logger.info(s"Objects count: $objectsCount --- Random number: $rnd")
