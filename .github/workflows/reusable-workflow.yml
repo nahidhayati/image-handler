@@ -28,7 +28,7 @@ jobs:
         with:
           path: ./src/main/resources/application.conf
           contents: |
-            \n openAiApiKey = ${{ secrets.OPENAI_API_KEY }}
+            openAiApiKey = ${{ secrets.OPENAI_API_KEY }}
           write-mode: append
 
       - name: Setup Scala
